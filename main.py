@@ -35,9 +35,9 @@ class ParsData:
 class Logging:
 
     @staticmethod
-    def save_function(article_list) -> None:
-        with open("articles.json", "w") as outfile:
-            for i in article_list:
+    def save_function(data_list) -> None:
+        with open("data.json", "w") as outfile:
+            for i in data_list:
                 json.dump(i, outfile, indent=2, ensure_ascii=False)
 
 
