@@ -7,23 +7,18 @@ from pprint import pprint
 
 class GetData:
     def __init__(self) -> None:
-        self.articles = []
+        self.raw_data = []
         self.url = 'https://lenta.ru/rss/news'
-
-    def take_rss_data(self):
-        r = requests.get(self.url)
-        soup = BeautifulSoup(r.content, features="lxml")
-        self.articles = soup.find_all("item")
-        return self.articles
-
-
-class ParsData:
-    def __init__(self) -> None:
-        self.data = GetData()
         self.data_list = []
 
+    def _take_rss_data(self):
+        r = requests.get(self.url)
+        soup = BeautifulSoup(r.content, features="lxml")
+        self.raw_data = soup.find_all("item")
+        return self.raw_data
+
     def pars_data(self):
-        for a in self.data.take_rss_data():
+        for a in self._take_rss_data():
             title = a.find("title").text
             category = a.find("category").text
             published = a.find("pubdate").text
@@ -44,7 +39,7 @@ class Logging:
 class Program:
 
     def __init__(self) -> None:
-        self.get_data = ParsData()
+        self.get_data = GetData()
         self.logger = Logging()
 
     def display(self) -> None:
@@ -61,4 +56,4 @@ if __name__ == "__main__":
         print("Scraping again in 5 minutes")
         print("Finished scraping")
         print("Saved to file")
-        time.sleep(5)
+        time.sleep(300)
