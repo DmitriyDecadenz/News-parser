@@ -3,8 +3,9 @@
 ### This script parsing rss news and dump data to json file
 
 
- How to run script
- 
+
+# How to run script
+
 1. 
 ```terminal
 python3 -m venv venv
