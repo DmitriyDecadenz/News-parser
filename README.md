@@ -1,6 +1,6 @@
 # News-parser
-### This's a RSS-News pasrser.
-### This script parsing rss news and dump data to json file
+### This's a RSS-News pasrser, where did i practice python OOP.
+### Script parsing rss news and dump data to json file
 
 
 
