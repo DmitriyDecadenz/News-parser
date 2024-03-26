@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import requests
+import httpx
 import json
 import time
 from pprint import pprint
@@ -11,13 +11,21 @@ class GetData:
         self.url = 'https://lenta.ru/rss/news'
         self.data_list = []
 
-    def _take_rss_data(self):
-        r = requests.get(self.url)
+    def _take_rss_data(self) -> list:
+        for i in range(3):
+            try:
+                r = httpx.get(self.url)
+                break
+            except:
+                print("Error")
+                time.sleep(3)
+                continue
+
         soup = BeautifulSoup(r.content, features="lxml")
         self.raw_data = soup.find_all("item")
         return self.raw_data
 
-    def pars_data(self):
+    def pars_data(self) -> list:
         for a in self._take_rss_data():
             title = a.find("title").text
             category = a.find("category").text
@@ -28,32 +36,31 @@ class GetData:
 
 
 class Logging:
+    def __init__(self, data: list) -> None:
+        self.data_list = data
 
-    @staticmethod
-    def save_function(data_list) -> None:
+    def log_to_json_file(self) -> None:
         with open("data.json", "w") as outfile:
-            for i in data_list:
-                json.dump(i, outfile, indent=2, ensure_ascii=False)
+            json.dump(self.data_list, outfile, indent=2, ensure_ascii=False)
 
 
 class Program:
 
     def __init__(self) -> None:
         self.get_data = GetData()
-        self.logger = Logging()
+        self.logger = Logging(self.get_data.pars_data())
 
     def display(self) -> None:
-        data = self.get_data.pars_data()
-        self.logger.save_function(data)
-        for i in data:
+
+        for i in self.get_data.pars_data():
             pprint(i)
+        self.logger.log_to_json_file()
 
 
 if __name__ == "__main__":
     while True:
         app = Program()
         app.display()
-        print("Scraping again in 5 minutes")
         print("Finished scraping")
-        print("Saved to file")
+        print("Next scraping in 5 minutes")
         time.sleep(300)
