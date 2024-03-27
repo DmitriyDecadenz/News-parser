@@ -44,17 +44,17 @@ class Logging:
     def log_to_json_file(self) -> None:
         with open(self.json_file, "a") as json_file:
             for data in self.json_list:
-                if not self._find_duplicate(data, 'title'):
+                if not self._check_duplicate(data, 'title'):
                     json.dump(data, json_file,
                               indent=4, ensure_ascii=False)
 
-    def _find_duplicate(self, item: dict, field: str) -> bool:
+    def _check_duplicate(self, item: dict, field: str) -> bool:
         try:
             with open(f"{self.json_file}", "r") as json_file:
                 data = json.load(json_file)
 
-                for chunk in data:
-                    if chunk['title'] == item[field]:
+                for obj in data:
+                    if obj['title'] == item[field]:
                         return True
                 return False
         except JSONDecodeError as error:
