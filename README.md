@@ -22,3 +22,8 @@ source venv/bin/activate
 ```terminal 
 pip install -r requirements.txt
 ```
+4.
+###Create .env file and write:
+```terminal
+RSS_URL = 'Your news rss url'
+``` 
