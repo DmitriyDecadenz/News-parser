@@ -4,12 +4,13 @@ import json
 from json import JSONDecodeError
 import time
 from pprint import pprint
+from config import settings
 
 
 class GetData:
-    def __init__(self) -> None:
+    def __init__(self, url) -> None:
         self.raw_data = []
-        self.url = 'https://lenta.ru/rss/news'
+        self.url = url
         self.data_list = []
 
     def _take_rss_data(self) -> list:
@@ -64,7 +65,7 @@ class Logging:
 class Program:
 
     def __init__(self) -> None:
-        self.get_data = GetData()
+        self.get_data = GetData(settings.RSS_URL)
         self.logger = Logging(self.get_data.pars_data())
 
     def display(self) -> None:
